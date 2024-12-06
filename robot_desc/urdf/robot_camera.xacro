@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<gazebo reference="camera_link">
+		<sensor type="camera" name="camera1">
+			<update_rate>30.0</update_rate>
+			<visualize>true</visualize>
+			<camera name="head">
+				<horizontal_fov>1.91986</horizontal_fov>
+				<intrinsics>
+					<fx>525.879333496</fx>
+					<fy>525.879333496</fy>
+					<cx>651.249389648</cx>
+					<cy>350.848449707</cy>
+				</intrinsics>
+				<image>
+					<width>800</width>
+					<height>800</height>
+					<format>R8G8B8</format>
+				</image>
+				<clip>
+					<near>0.02</near>
+					<far>300</far>
+				</clip>
+				<noise>
+					<type>gaussian</type>
+					<mean>0.0</mean>
+					<stddev>0.007</stddev>
+				</noise>
+			</camera>
+			<plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+				<alwaysOn>true</alwaysOn>
+				<updateRate>0.0</updateRate>
+				<cameraName>robot/camera1</cameraName>
+				<imageTopicName>image</imageTopicName>
+				<cameraInfoTopicName>camera_info</cameraInfoTopicName>
+				<frameName>camera_frame</frameName>
+				<hackBaseline>0.07</hackBaseline>
+				<distortionK1>0.0</distortionK1>
+				<distortionK2>0.0</distortionK2>
+				<distortionK3>0.0</distortionK3>
+				<distortionT1>0.0</distortionT1>
+				<distortionT2>0.0</distortionT2>
+			</plugin>
+		</sensor>
+	</gazebo>
+	<gazebo reference="camera_short_link">
+		<sensor type="camera" name="short_1_camera">
+			<update_rate>30.0</update_rate>
+			<visualize>true</visualize>
+			<camera name="head">
+				<horizontal_fov>1.91986</horizontal_fov>
+				<intrinsics>
+					<fx>545.444152832</fx>
+					<fy>545.444152832</fy>
+					<cx>641.510314941</cx>
+					<cy>350.597442626</cy>
+				</intrinsics>
+				<image>
+					<width>800</width>
+					<height>800</height>
+					<format>R8G8B8</format>
+				</image>
+				<clip>
+					<near>0.02</near>
+					<far>300</far>
+				</clip>
+				<noise>
+					<type>gaussian</type>
+					<mean>0.0</mean>
+					<stddev>0.007</stddev>
+				</noise>
+			</camera>
+			<plugin name="camera_short_controller" filename="libgazebo_ros_camera.so">
+				<alwaysOn>true</alwaysOn>
+				<updateRate>0.0</updateRate>
+				<cameraName>robot/camera_short_1</cameraName>
+				<imageTopicName>image</imageTopicName>
+				<cameraInfoTopicName>camera_info</cameraInfoTopicName>
+				<frameName>camera_short_frame</frameName>
+				<hackBaseline>0.07</hackBaseline>
+				<distortionK1>0.0</distortionK1>
+				<distortionK2>0.0</distortionK2>
+				<distortionK3>0.0</distortionK3>
+				<distortionT1>0.0</distortionT1>
+				<distortionT2>0.0</distortionT2>
+			</plugin>
+		</sensor>
+	</gazebo>
+
+	<gazebo reference="depth_camera_link">
+		<sensor type="depth" name="depth_camera1">
+			<update_rate>30.0</update_rate>
+			<camera name="depth_head">
+				<horizontal_fov>1.91986</horizontal_fov>
+				<intrinsics>
+					<fx>525.879333496</fx>
+					<fy>525.879333496</fy>
+					<cx>651.249389648</cx>
+					<cy>350.848449707</cy>
+				</intrinsics>
+				<image>
+					<width>800</width>
+					<height>800</height>
+					<format>R8G8B8</format>
+				</image>
+				<clip>
+					<near>0.02</near>
+					<far>300</far>
+				</clip>
+				<noise>
+					<type>gaussian</type>
+					<mean>0.0</mean>
+					<stddev>0.007</stddev>
+				</noise>
+			</camera>
+			<plugin name="depth_camera_controller" filename="libgazebo_ros_camera.so">
+				<alwaysOn>true</alwaysOn>
+				<updateRate>0.0</updateRate>
+				<cameraName>robot/depth_camera1</cameraName>
+				<imageTopicName>depth_image</imageTopicName>
+				<cameraInfoTopicName>depth_camera_info</cameraInfoTopicName>
+				<frameName>depth_camera_frame</frameName>
+				<min_depth>0.05</min_depth>
+				<max_depth>1000.0</max_depth>
+				<hackBaseline>0.07</hackBaseline>
+				<distortionK1>0.0</distortionK1>
+				<distortionK2>0.0</distortionK2>
+				<distortionK3>0.0</distortionK3>
+				<distortionT1>0.0</distortionT1>
+				<distortionT2>0.0</distortionT2>
+			</plugin>
+		</sensor>
+	</gazebo>
+	<gazebo reference="depth_camera_short_link">
+		<sensor type="depth" name="depth_short_1_camera">
+			<update_rate>30.0</update_rate>
+			<camera name="head">
+				<horizontal_fov>1.91986</horizontal_fov>
+				<intrinsics>
+					<fx>545.444152832</fx>
+					<fy>545.444152832</fy>
+					<cx>641.510314941</cx>
+					<cy>350.597442626</cy>
+				</intrinsics>
+				<image>
+					<width>800</width>
+					<height>800</height>
+					<format>R8G8B8</format>
+				</image>
+				<clip>
+					<near>0.02</near>
+					<far>300</far>
+				</clip>
+				<noise>
+					<type>gaussian</type>
+					<mean>0.0</mean>
+					<stddev>0.007</stddev>
+				</noise>
+			</camera>
+			<plugin name="depth_camera_short_controller" filename="libgazebo_ros_camera.so">
+				<alwaysOn>true</alwaysOn>
+				<updateRate>0.0</updateRate>
+				<cameraName>robot/depth_camera_short_1</cameraName>
+				<imageTopicName>depth_image</imageTopicName>
+				<cameraInfoTopicName>depth_camera_info</cameraInfoTopicName>
+				<frameName>depth_camera_short_frame</frameName>
+				<min_depth>0.05</min_depth>
+				<max_depth>1000.0</max_depth>
+				<hackBaseline>0.07</hackBaseline>
+				<distortionK1>0.0</distortionK1>
+				<distortionK2>0.0</distortionK2>
+				<distortionK3>0.0</distortionK3>
+				<distortionT1>0.0</distortionT1>
+				<distortionT2>0.0</distortionT2>
+			</plugin>
+		</sensor>
+	</gazebo>
+	<gazebo reference="mono_camera_link">
+		<sensor type="camera" name="mono_camera">
+			<update_rate>30.0</update_rate>
+			<visualize>true</visualize>
+			<camera name="head">
+				<horizontal_fov>0.7</horizontal_fov>
+				<intrinsics>
+					<fx>545.444152832</fx>
+					<fy>545.444152832</fy>
+					<cx>641.510314941</cx>
+					<cy>350.597442626</cy>
+				</intrinsics>
+				<image>
+					<width>800</width>
+					<height>800</height>
+					<format>R8G8B8</format>
+				</image>
+				<clip>
+					<near>0.02</near>
+					<far>1</far>
+				</clip>
+				<noise>
+					<type>gaussian</type>
+					<mean>0.0</mean>
+					<stddev>0.007</stddev>
+				</noise>
+			</camera>
+			<plugin name="mono_camera_controller" filename="libgazebo_ros_camera.so">
+				<alwaysOn>true</alwaysOn>
+				<updateRate>0.0</updateRate>
+				<cameraName>robot/camera_short_1</cameraName>
+				<imageTopicName>image</imageTopicName>
+				<cameraInfoTopicName>camera_info</cameraInfoTopicName>
+				<frameName>camera_short_frame</frameName>
+				<hackBaseline>0.07</hackBaseline>
+				<distortionK1>0.0</distortionK1>
+				<distortionK2>0.0</distortionK2>
+				<distortionK3>0.0</distortionK3>
+				<distortionT1>0.0</distortionT1>
+				<distortionT2>0.0</distortionT2>
+			</plugin>
+		</sensor>
+	</gazebo>
+</robot>
+

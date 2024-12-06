@@ -1,0 +1,487 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="bot">
+  <xacro:property name="caster_z" value="0.02115" />
+  <xacro:property name="caster_scale" value="2" />
+  <xacro:property name="caster_pos_x" value="-0.175" />
+  <xacro:property name="caster_pos_y" value="0.45" />
+  <xacro:property name="caster_pos_z" value="0.014" />
+  <xacro:property name="caster_pos_y2" value="-0.5" />
+  <xacro:property name="mono_camera_x" value="0.05" />
+  <xacro:property name="mono_camera_y" value="0.55" />
+  <xacro:property name="mono_camera_z" value="0.2" />
+  <xacro:property name="mono_camera_tilt_angle" value="1.0472" />
+  <xacro:property name="camera_link" value="0.001" />
+  <xacro:property name="tilt_angle" value="0.296706" />
+  <xacro:property name="camera_common_radius" value="0.03" />
+  <xacro:property name="camera_subtended_angle" value="1.91986" />
+  <xacro:include filename="robot_control.xacro" />
+  <xacro:include filename="robot_camera.xacro" />
+  <xacro:include filename="robot_lidar.xacro" />
+  <xacro:include filename="robot_gps.xacro" />
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+	  ixx="1.3" ixy="0.0" ixz="0.0"
+	  iyy="1.3" iyz="0.0"
+	  izz="1.3"/>
+    </inertial>
+  </link>
+
+  <link name="chassis">
+    <collision>
+      <origin xyz="0.35 0 0" rpy="0 0 0"/>
+      <geometry>
+      <mesh filename="package://robot_desc/meshes/igvc_bot.dae" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0.35 0 0" rpy="0 0 0"/>
+      <geometry>
+      <mesh filename="package://robot_desc/meshes/igvc_bot.dae" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin xyz="0.35 0 0" rpy="0 0 0"/>
+      <mass value="5"/>
+      <inertia
+	  ixx="0.67" ixy="0.0" ixz="0.0"
+	  iyy="0.4" iyz="0.0"
+	  izz="0.8"/>
+    </inertial>
+  </link>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="chassis"/>
+    <origin xyz="0 0 0.12" rpy="0 0 1.57"/>
+    <limit effort="1000000" velocity="10000000"/>
+  </joint>
+
+  <link name="wheel">
+    <collision>
+      <origin xyz="0.07 0 0" rpy="0 0 0"/>
+      <geometry>
+      <mesh filename="package://robot_desc/meshes/igvc_wheel.dae" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0.07 0 0" rpy="0 0 0"/>
+      <geometry>
+      <mesh filename="package://robot_desc/meshes/igvc_wheel.dae" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin xyz="0.07 0 0" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia
+	  ixx="0.0072" ixy="0.0" ixz="0.0"
+	  iyy="0.0036" iyz="0.0"
+	  izz="0.0036"/>
+    </inertial>
+  </link>
+  <joint name="wheel_joint" type="continuous">
+    <parent link="chassis"/>
+    <child link="wheel"/>
+    <origin xyz="0.28 0 0" rpy="0 0 0"/>
+    <limit effort="1000000" velocity="10000000"/>
+  </joint>
+
+  <link name="wheel1">
+    <collision>
+      <origin xyz="0.07 0 0" rpy="0 0 0"/>
+      <geometry>
+      <mesh filename="package://robot_desc/meshes/igvc_wheel.dae" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <friction>
+        <mu1> 10 </mu1>
+        <mu2> 10 </mu2>
+      </friction>
+    </collision>
+
+    <visual>
+      <origin xyz="0.07 0 0" rpy="0 0 0"/>
+      <geometry>
+      <mesh filename="package://robot_desc/meshes/igvc_wheel.dae" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin xyz="0.07 0 0" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia
+	  ixx="0.0072" ixy="0.0" ixz="0.0" iyy="0.0036" iyz="0.0036"
+	  izz="0.1"/>
+    </inertial>
+  </link>
+
+  <joint name="wheel1_joint" type="continuous">
+    <parent link="chassis"/>
+    <child link="wheel1"/>
+    <origin xyz="-0.28 0 0" rpy="0 0 0"/>
+    <limit effort="1000000" velocity="10000000"/>
+  </joint>
+
+  <link name="caster_part">
+    <collision>
+    <origin xyz="0 0 0" rpy="0 0 -1.57"/>
+      <geometry>
+      <mesh filename="package://robot_desc/meshes/caster_base2.dae" scale="${caster_scale} ${caster_scale} ${caster_scale}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0"  rpy="0 0 -1.57"/>
+      <geometry>
+      <mesh filename="package://robot_desc/meshes/caster_base2.dae" scale="${caster_scale} ${caster_scale} ${caster_scale}"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 -1.57"/>
+      <mass value="0.5"/>
+      <inertia
+	  ixx="0.000625" ixy="0.0" ixz="0.0"
+	  iyy="0.0003125" iyz="0.0"
+	  izz="0.0003125"/>
+    </inertial>
+  </link>
+  <link name="caster_wheel">
+    <collision>
+    <origin xyz="0 0 0" rpy="0 1.57 0"/>
+      <geometry>
+      <mesh filename="package://robot_desc/meshes/caswheel.dae" scale="${caster_scale} ${caster_scale} ${caster_scale}"/>
+      </geometry>
+      <friction>
+        <mu1> 10 </mu1>
+        <mu2> 10 </mu2>
+      </friction>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 1.57 0"/>
+      <geometry>
+      <mesh filename="package://robot_desc/meshes/caswheel.dae" scale="${caster_scale} ${caster_scale} ${caster_scale}"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 1.57 0"/>
+      <mass value="0.5"/>
+      <inertia
+	  ixx="0.000625" ixy="0.0" ixz="0.0"
+	  iyy="0.0003125" iyz="0.0"
+	  izz="0.0003125"/>
+    </inertial>
+  </link>
+  <joint name="caster_joint" type="continuous">
+    <parent link="caster_part"/>
+    <child link="caster_wheel"/>
+    <origin xyz="0 0.05 -0.086" rpy="0 0 0"/>
+    <limit effort="1000000" velocity="10000000"/>
+  </joint>
+
+  <joint name="caster_body_joint" type="continuous">
+    <parent link="chassis"/>
+    <child link="caster_part"/>
+    <origin xyz="0 ${caster_pos_y} ${caster_pos_z}" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000000" velocity="10000000"/>
+  </joint>
+
+  <!-- ......................................................................................................................  -->
+    <link name="caster_part2">
+    <collision>
+    <origin xyz="0 0 0" rpy="0 0 -1.57"/>
+      <geometry>
+      <mesh filename="package://robot_desc/meshes/caster_base2.dae" scale="${caster_scale} ${caster_scale} ${caster_scale}"/>
+      </geometry>
+      <friction>
+        <mu1> 10 </mu1>
+        <mu2> 10 </mu2>
+      </friction>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0"  rpy="0 0 -1.57"/>
+      <geometry>
+      <mesh filename="package://robot_desc/meshes/caster_base2.dae" scale="${caster_scale} ${caster_scale} ${caster_scale}"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 -1.57"/>
+      <mass value="0.5"/>
+      <inertia
+	  ixx="0.000625" ixy="0.0" ixz="0.0"
+	  iyy="0.0003125" iyz="0.0"
+	  izz="0.0003125"/>
+    </inertial>
+  </link>
+  <link name="caster_wheel2">
+    <collision>
+    <origin xyz="0 0 0" rpy="0 1.57 0"/>
+      <geometry>
+      <mesh filename="package://robot_desc/meshes/caswheel.dae" scale="${caster_scale} ${caster_scale} ${caster_scale}"/>
+      </geometry>
+      <friction>
+        <mu1> 10 </mu1>
+        <mu2> 10 </mu2>
+      </friction>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 1.57 0"/>
+      <geometry>
+      <mesh filename="package://robot_desc/meshes/caswheel.dae" scale="${caster_scale} ${caster_scale} ${caster_scale}"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 1.57 0"/>
+      <mass value="0.5"/>
+      <inertia
+	  ixx="0.000625" ixy="0.0" ixz="0.0"
+	  iyy="0.0003125" iyz="0.0"
+	  izz="0.0003125"/>
+    </inertial>
+  </link>
+  <joint name="caster_joint2" type="continuous">
+    <parent link="caster_part2"/>
+    <child link="caster_wheel2"/>
+    <origin xyz="0 0.05 -0.086" rpy="0 0 0"/>
+    <limit effort="1000000" velocity="10000000"/>
+  </joint>
+
+  <joint name="caster_body_joint2" type="continuous">
+    <parent link="chassis"/>
+    <child link="caster_part2"/>
+    <origin xyz="0 ${caster_pos_y2} ${caster_pos_z}" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000000" velocity="10000000"/>
+  </joint>
+
+  <!-- .............................................................................................................. -->
+
+  <link name="camera_short_link">
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <box size="${camera_link} ${camera_link} ${camera_link}"/>      
+          </geometry>
+      </collision>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${camera_link} ${camera_link} ${camera_link}"/>      
+        </geometry>
+      </visual>
+
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.5"/>
+        <inertia
+        ixx="0.00000625" ixy="0.0" ixz="0.0"
+        iyy="0.000003125" iyz="0.0"
+        izz="0.000003125"/>
+      </inertial>
+  </link>
+
+  <joint name="camera_short_joint" type="fixed">
+    <parent link="chassis"/>
+    <child link="camera_short_link"/>
+    <origin xyz="${-camera_common_radius*sin(camera_subtended_angle/2)} ${-caster_pos_y/2 + camera_common_radius*cos(camera_subtended_angle/2)} 0.9" rpy="0 ${tilt_angle} ${-1.57079632679-camera_subtended_angle/2}"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000000" velocity="1000000"/>
+  </joint>
+
+  <link name="depth_camera_short_link">
+      <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <box size="${camera_link} ${camera_link} ${camera_link}"/>      
+          </geometry>
+      </collision>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${camera_link} ${camera_link} ${camera_link}"/>      
+        </geometry>
+      </visual>
+
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.5"/>
+        <inertia
+        ixx="0.00000625" ixy="0.0" ixz="0.0"
+        iyy="0.000003125" iyz="0.0"
+        izz="0.000003125"/>
+      </inertial>
+  </link>
+
+  <joint name="depth_camera_short_joint" type="fixed">
+    <parent link="chassis"/>
+    <child link="depth_camera_short_link"/>
+    <origin xyz="${-camera_common_radius*sin(camera_subtended_angle/2)} ${-caster_pos_y/2 + camera_common_radius*cos(camera_subtended_angle/2)} 0.9" rpy="0 ${tilt_angle} ${-1.57079632679-camera_subtended_angle/2}"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000000" velocity="1000000"/>
+  </joint>
+
+  <link name="camera_link">
+    <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${camera_link} ${camera_link} ${camera_link}"/>      
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${camera_link} ${camera_link} ${camera_link}"/>      
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia
+	  ixx="0.00000625" ixy="0.0" ixz="0.0"
+	  iyy="0.000003125" iyz="0.0"
+	  izz="0.000003125"/>
+    </inertial>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <parent link="chassis"/>
+    <child link="camera_link"/>
+    <origin xyz="${camera_common_radius*sin(camera_subtended_angle/2)} ${-caster_pos_y/2 + camera_common_radius*cos(camera_subtended_angle/2)} 0.9" rpy="0 ${tilt_angle} ${-1.57079632679+camera_subtended_angle/2}"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000000" velocity="1000000"/>
+  </joint>
+  <link name="depth_camera_link">
+    <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${camera_link} ${camera_link} ${camera_link}"/>      
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${camera_link} ${camera_link} ${camera_link}"/>      
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia
+	  ixx="0.00000625" ixy="0.0" ixz="0.0"
+	  iyy="0.000003125" iyz="0.0"
+	  izz="0.000003125"/>
+    </inertial>
+  </link>
+
+  <joint name="depth_camera_joint" type="fixed">
+    <parent link="chassis"/>
+    <child link="depth_camera_link"/>
+    <origin xyz="${camera_common_radius*sin(camera_subtended_angle/2)} ${-caster_pos_y/2 + camera_common_radius*cos(camera_subtended_angle/2)} 0.9" rpy="0 ${tilt_angle} ${-1.57079632679+camera_subtended_angle/2}"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000000" velocity="1000000"/>
+  </joint>
+
+  <!--........................................................................................................-->
+    <link name="mono_camera_link">
+    <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${camera_link} ${camera_link} ${camera_link}"/>      
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${camera_link} ${camera_link} ${camera_link}"/>      
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia
+      ixx="0.00000625" ixy="0.0" ixz="0.0"
+      iyy="0.000003125" iyz="0.0"
+      izz="0.000003125"/>
+    </inertial>
+  </link>
+
+  <joint name="mono_camera_joint" type="fixed">
+    <parent link="chassis"/>
+    <child link="mono_camera_link"/>
+    <origin xyz="${mono_camera_x} ${-mono_camera_y} ${mono_camera_z}" rpy="0 ${mono_camera_tilt_angle} ${-pi/2}"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000000" velocity="1000000"/>
+  </joint>
+
+  <!--......................................................................................................-->
+
+  <link name="lidar_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${camera_link} ${camera_link} ${camera_link}"/>      
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${camera_link} ${camera_link} ${camera_link}"/>      
+      </geometry>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+  
+  <joint name="lidar_joint" type="fixed">
+    <parent link="chassis"/>
+    <child link="lidar_link"/>
+    <origin xyz="0 ${-caster_pos_y/4} 0.45" rpy="0 0 0"/>
+  </joint>
+
+  <link name="gps_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="${camera_link} ${camera_link} ${camera_link}"/>      
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="${camera_link} ${camera_link} ${camera_link}"/>      
+      </geometry>
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+  
+  <joint name="gps_joint" type="fixed">
+    <parent link="chassis"/>
+    <child link="gps_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+</robot>

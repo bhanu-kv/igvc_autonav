@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <gazebo reference="gps_link">
+	<sensor name="bot_gps" type="gps">
+	  <always_on>true</always_on>
+	  <update_rate>1</update_rate>
+	  <pose>0 0 0 0 0 0</pose>
+	  <gps>
+	    <position_sensing>
+	      <horizontal>
+		<noise type="gaussian">
+		  <mean>0.0</mean>
+		  <stddev>0.01</stddev>
+		</noise>
+	      </horizontal>
+	      <vertical>
+		<noise type="gaussian">
+		  <mean>0.0</mean>
+		  <stddev>0.01</stddev>
+		</noise>
+	      </vertical>
+	    </position_sensing>
+	  </gps>
+	  <plugin name="my_gps_plugin" filename="libgazebo_ros_gps_sensor.so">
+	    <ros>
+	      <namespace>gps</namespace>
+	      <remapping>~/out:=fix</remapping>
+	    </ros>
+	    <output_type>sensor_msgs/NavSatFix</output_type>
+            <frame_name>gps_link</frame_name>
+	  </plugin>
+	</sensor>
+   </gazebo>
+</robot>

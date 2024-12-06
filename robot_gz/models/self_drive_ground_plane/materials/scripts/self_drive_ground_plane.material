@@ -1,0 +1,14 @@
+material SelfDriveGroundPlane/Image
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture self_drive_image.jpeg
+                scale 0.5 0.5
+            }
+        }
+    }
+}
